@@ -1,4 +1,4 @@
-from flask import Flask,request, make_response, render_template
+from flask import Flask,request, make_response, render_template, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -18,6 +18,10 @@ def user(name):
     response.set_cookie('cookie_id','cookie de usuario')
     return response
 
+@app.route('/boveda')
+def boveda():
+    return render_template('post_form.html')
+
 @app.route('/formulario',methods=['GET','POST'])
 def formulario():
     #Formulario de ingreso nombre y boton submit.
@@ -26,6 +30,8 @@ def formulario():
     if form.validate_on_submit():
         name = form.name.data
         form.name.data= ''
+        return redirect(url_for('boveda'))
+
     return render_template('form.html',form=form,name=name)
 
 
